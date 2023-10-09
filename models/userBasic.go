@@ -13,8 +13,8 @@ type UserBasic struct {
 	Phone        string
 	Email        string
 	Identity     string
-	ClinetIP     string
-	ClintProt    string
+	ClientIP     string
+	ClientProt   string
 	LoginTime    string
 	Heartbeat    string // 考虑用户心跳时间
 	LoginOutTime string `gorm:"column:login_out_time" json: "login_out_time"`
@@ -30,4 +30,8 @@ func GetUserList() []*UserBasic {
 	data := make([]*UserBasic, 10)
 	utils.DB.Find(&data)
 	return data
+}
+
+func CreateUser(user UserBasic) *gorm.DB {
+	return utils.DB.Create(&user)
 }
