@@ -1,4 +1,19 @@
 info:
   contact: {}
-paths: {}
+paths:
+  /index:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: string
+            type: array
+      tags:
+      - 示例
 swagger: "2.0"
