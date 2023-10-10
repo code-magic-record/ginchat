@@ -19,19 +19,25 @@ import (
 // @Router /user/create [post]
 func CreateUser(c *gin.Context) {
 	user := models.UserBasic{}
-	user.Name = c.Query("name")
-	password := c.Query("password")
-	repasswrod := c.Query("repasswrod")
-
+	name := c.PostForm("name")
+	password := c.PostForm("password")
+	repasswrod := c.PostForm("repasswrod")
 	if password != repasswrod {
 		c.JSON(-1, gin.H{
 			"message": "两次密码不一致",
 		})
+		return
 	}
-
+	user.Name = name
 	user.Password = password
-	// fmt.Println(user)
-	models.CreateUser(user)
+	reuslt := models.CreateUser(user)
+	if reuslt != nil {
+		c.JSON(-1, gin.H{
+			"message": "创建失败",
+			"reuslt":  reuslt.Error(),
+		})
+		return
+	}
 	c.JSON(200, gin.H{
 		"message": "创建成功",
 	})

@@ -24,11 +24,11 @@ func InitConfig() {
 		fmt.Println(err)
 	}
 	// fmt.Println("config app:", viper.Get("app"))
-	fmt.Println("config app:", viper.Get("mysql.dns"))
+	// fmt.Println("config app:", viper.Get("mysql.dns"))
+	InitMySQL(viper.GetViper())
 }
 
-func InitMySQL() {
-	// 自定义日志，打印SQL语句
+func InitMySQL(viper *viper.Viper) {
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
 		logger.Config{
@@ -38,9 +38,14 @@ func InitMySQL() {
 		},
 	)
 
-	DB, _ := gorm.Open(mysql.Open(viper.GetString("mysql.dns")), &gorm.Config{
+	db, err := gorm.Open(mysql.Open(viper.GetString("mysql.dns")), &gorm.Config{
 		Logger: newLogger,
 	})
 
-	fmt.Println(DB)
+	DB = db
+	if err != nil {
+		fmt.Println(err, "failed to connect database")
+	}
+	fmt.Println("connect database success")
+
 }

@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"ginchat/utils"
 
 	"gorm.io/gorm"
@@ -8,30 +9,23 @@ import (
 
 type UserBasic struct {
 	gorm.Model
-	Name         string
-	Password     string
-	Phone        string
-	Email        string
-	Identity     string
-	ClientIP     string
-	ClientProt   string
-	LoginTime    string
-	Heartbeat    string // 考虑用户心跳时间
-	LoginOutTime string `gorm:"column:login_out_time" json: "login_out_time"`
-	IsLogout     bool   // 考虑用户是否退出
-	DeviceInfo   string // 考虑用户设备信息
+	Name     string `gorm:"type:varchar(20);not null;unique" json:"name"`
+	Password string `gorm:"type:varchar(20);not null" json:"password"`
 }
 
-func (table *UserBasic) TableName() string {
-	return "user_basic"
+func (UserBasic) TableName() string {
+	return "user_basics"
 }
 
-func GetUserList() []*UserBasic {
-	data := make([]*UserBasic, 10)
-	utils.DB.Find(&data)
-	return data
-}
-
-func CreateUser(user UserBasic) *gorm.DB {
-	return utils.DB.Create(&user)
+func CreateUser(user UserBasic) error {
+	// 自动迁移
+	utils.DB.AutoMigrate(&UserBasic{})
+	// utils.DB.Create(&user)
+	result := utils.DB.Create(&user)
+	fmt.Println(result, "创建成功了？")
+	if result.Error != nil {
+		// 在这里处理错误，例如输出日志、返回错误信息等
+		return result.Error
+	}
+	return nil
 }

@@ -20,6 +20,8 @@ func Router() *gin.Engine {
 		service.GetIndex(c)
 	})
 
-	r.POST("/user/create", service.CreateUser)
+	r.POST("/user/create", func(c *gin.Context) {
+		service.CreateUser(c)
+	})
 	return r
 }
