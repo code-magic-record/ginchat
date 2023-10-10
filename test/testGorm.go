@@ -1,30 +1,28 @@
 package main
 
 import (
-	"fmt"
 	"ginchat/models"
-
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
+	"ginchat/utils"
 )
 
 func main() {
-	db, err := gorm.Open(mysql.Open(""), &gorm.Config{})
-	if err != nil {
-		panic("failed to connect database")
-	}
+	// db, err := gorm.Open(mysql.Open(""), &gorm.Config{})
+	// if err != nil {
+	// 	panic("failed to connect database")
+	// },
+	utils.InitConfig()
 
 	// Migrate the schema
-	db.AutoMigrate(&models.UserBasic{})
+	utils.DB.AutoMigrate(&models.UserBasic{})
 
-	// Create
+	// // Create
 	user := &models.UserBasic{}
 	user.Name = "zyg"
 
-	db.Create(user)
+	utils.DB.Create(user)
 
-	// Read
-	fmt.Println(db.First(user, 1)) // find product with integer primary key
+	// // Read
+	// fmt.Println(utils.DB.First(user, 1)) // find product with integer primary key
 
 	// update
 	// db.Model(user).Update("Name", "zyg2")
