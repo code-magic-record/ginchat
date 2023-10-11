@@ -48,5 +48,4 @@ func InitMySQL(viper *viper.Viper) {
 		return
 	}
 	fmt.Println("connect database success")
-
 }

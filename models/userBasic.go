@@ -16,9 +16,6 @@ func (UserBasic) TableName() string {
 	return "user_basics"
 }
 
-// 自动迁移
-// utils.DB.AutoMigrate(&UserBasic{})
-
 func CreateUser(user UserBasic) error {
 	result := utils.DB.Create(&user)
 	if result.Error != nil {
