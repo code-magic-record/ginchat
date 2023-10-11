@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 	"ginchat/utils"
 
 	"gorm.io/gorm"
@@ -17,12 +16,11 @@ func (UserBasic) TableName() string {
 	return "user_basics"
 }
 
+// 自动迁移
+// utils.DB.AutoMigrate(&UserBasic{})
+
 func CreateUser(user UserBasic) error {
-	// 自动迁移
-	utils.DB.AutoMigrate(&UserBasic{})
-	// utils.DB.Create(&user)
 	result := utils.DB.Create(&user)
-	fmt.Println(result, "创建成功了？")
 	if result.Error != nil {
 		// 在这里处理错误，例如输出日志、返回错误信息等
 		return result.Error

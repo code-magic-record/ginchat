@@ -21,8 +21,8 @@ func CreateUser(c *gin.Context) {
 	user := models.UserBasic{}
 	name := c.PostForm("name")
 	password := c.PostForm("password")
-	repasswrod := c.PostForm("repasswrod")
-	if password != repasswrod {
+	repassword := c.PostForm("repassword")
+	if password != repassword {
 		c.JSON(-1, gin.H{
 			"message": "两次密码不一致",
 		})
