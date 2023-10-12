@@ -3,6 +3,7 @@
 Golang练习项目、技术栈
 - [x] gin
 - [x] gorm
+- [x] bcrypt
 - [ ] jwt
 - [ ] redis
 - [x] mysql
@@ -18,7 +19,7 @@ Golang练习项目、技术栈
 ## 接口实现
 
 ### user 接口
-- [ ] 注册接口
+- [x] 注册接口
 - [ ] 登录接口
 - [ ] 登录
 - [ ] 退出登录
