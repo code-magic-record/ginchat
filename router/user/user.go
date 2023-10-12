@@ -9,11 +9,12 @@ import (
 func UserRouter() *gin.Engine {
 	r := gin.New()
 	v1 := r.Group("/v1/user")
-	v1.GET("/index", func(c *gin.Context) {
-		service.GetIndex(c)
+
+	v1.POST("/register", func(c *gin.Context) {
+		service.RegisterUser(c)
 	})
-	v1.POST("/create", func(c *gin.Context) {
-		service.CreateUser(c)
+	v1.POST("/login", func(c *gin.Context) {
+		// service.RegisterUser(c)
 	})
 
 	return r
