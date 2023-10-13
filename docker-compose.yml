@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  ginchat:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: ginchat-v1
+    container_name: ginchat-v1
+    ports:
+      - "8080:8080"
+    environment:
+      - TZ=Asia/shanghai
+    volumes:
+      - .:/app
+
