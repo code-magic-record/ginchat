@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	utils.InitConfig()
+	utils.InitSystemConfig()
 	r := router.Router()
 	// 自动表迁移
 	utils.DB.AutoMigrate(&models.UserBasic{})

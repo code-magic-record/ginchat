@@ -17,6 +17,24 @@ import (
 var DB *gorm.DB
 var RDB *redis.Client
 
+func InitSystemConfig() {
+	viper := getYmlConfig()
+	InitMySQL(viper)
+	InitRedis(viper)
+}
+
+func getYmlConfig() *viper.Viper {
+	// 读取配置文件
+	viper.SetConfigName("app")
+	viper.AddConfigPath("config")
+
+	err := viper.ReadInConfig()
+	if err != nil {
+		fmt.Println(err)
+	}
+	return viper.GetViper()
+}
+
 func InitRedis(viper *viper.Viper) {
 	redisConfig := viper.GetStringMap("redis")
 	RDB = redis.NewClient(&redis.Options{
@@ -34,19 +52,6 @@ func InitRedis(viper *viper.Viper) {
 	RDB.Set(RDB.Context(), "ginchat", "test", time.Second)
 
 	fmt.Println("connect redis success")
-}
-
-func InitConfig() {
-	// 读取配置文件
-	viper.SetConfigName("app")
-	viper.AddConfigPath("config")
-
-	err := viper.ReadInConfig()
-	if err != nil {
-		fmt.Println(err)
-	}
-	InitMySQL(viper.GetViper())
-	InitRedis(viper.GetViper())
 }
 
 func InitMySQL(viper *viper.Viper) {
@@ -69,4 +74,8 @@ func InitMySQL(viper *viper.Viper) {
 		return
 	}
 	fmt.Println("connect database success")
+	token := CreateToken(map[string]interface{}{
+		"test": "test",
+	})
+	fmt.Println(token, "token")
 }

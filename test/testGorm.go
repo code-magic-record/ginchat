@@ -10,7 +10,7 @@ func main() {
 	// if err != nil {
 	// 	panic("failed to connect database")
 	// },
-	utils.InitConfig()
+	utils.InitSystemConfig()
 
 	// Migrate the schema
 	utils.DB.AutoMigrate(&models.UserBasic{})
