@@ -5,7 +5,7 @@ Golang练习项目、技术栈
 - [x] gorm
 - [x] bcrypt
 - [ ] jwt
-- [ ] redis
+- [x] redis
 - [x] mysql
 - [ ] docker
 - [ ] swagger

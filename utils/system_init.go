@@ -6,6 +6,8 @@ import (
 	"os"
 	"time"
 
+	"github.com/go-redis/redis/v8"
+
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -13,6 +15,26 @@ import (
 )
 
 var DB *gorm.DB
+var RDB *redis.Client
+
+func InitRedis(viper *viper.Viper) {
+	redisConfig := viper.GetStringMap("redis")
+	RDB = redis.NewClient(&redis.Options{
+		Addr:     redisConfig["addr"].(string),
+		Password: redisConfig["password"].(string),
+		DB:       int(redisConfig["db"].(int)),
+	})
+
+	_, err := RDB.Ping(RDB.Context()).Result()
+
+	if err != nil {
+		fmt.Println(err, "failed to connect redis")
+		return
+	}
+	RDB.Set(RDB.Context(), "ginchat", "test", time.Second)
+
+	fmt.Println("connect redis success")
+}
 
 func InitConfig() {
 	// 读取配置文件
@@ -23,9 +45,8 @@ func InitConfig() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	// fmt.Println("config app:", viper.Get("app"))
-	// fmt.Println("config app:", viper.Get("mysql.dns"))
 	InitMySQL(viper.GetViper())
+	InitRedis(viper.GetViper())
 }
 
 func InitMySQL(viper *viper.Viper) {
