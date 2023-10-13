@@ -70,12 +70,12 @@ func UserLogin(c *gin.Context) {
 		return
 	}
 
-	if curUser.Password != utils.EnCodeMD5(password) {
+	flag := utils.UnCodeMD5(password, curUser.Password)
+	if !flag {
 		c.JSON(400, gin.H{
-			"message":          "密码错误",
-			"code":             0,
-			"password":         utils.EnCodeMD5(password),
-			"curUser.Password": curUser.Password,
+			"message": "密码错误",
+			"code":    0,
+			"flag":    flag,
 		})
 		return
 	}
