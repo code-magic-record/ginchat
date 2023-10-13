@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func RegisterUser(c *gin.Context) {
+func UserRegister(c *gin.Context) {
 	user := models.UserBasic{}
 	name := c.PostForm("name")
 	password := c.PostForm("password")
@@ -45,6 +45,43 @@ func RegisterUser(c *gin.Context) {
 	}
 	c.JSON(200, gin.H{
 		"message": "创建成功",
+		"code":    1,
+	})
+}
+
+func UserLogin(c *gin.Context) {
+	phone := c.PostForm("phone")
+	password := c.PostForm("password")
+
+	if phone == "" || password == "" {
+		c.JSON(400, gin.H{
+			"message": "参数异常",
+			"code":    0,
+		})
+		return
+	}
+
+	curUser := models.SearchUserByPhone(phone)
+	if curUser.Id == 0 {
+		c.JSON(400, gin.H{
+			"message": "该用户不存在",
+			"code":    0,
+		})
+		return
+	}
+
+	if curUser.Password != utils.EnCodeMD5(password) {
+		c.JSON(400, gin.H{
+			"message":          "密码错误",
+			"code":             0,
+			"password":         utils.EnCodeMD5(password),
+			"curUser.Password": curUser.Password,
+		})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"message": "登录成功",
 		"code":    1,
 	})
 }

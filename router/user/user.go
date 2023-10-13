@@ -11,10 +11,10 @@ func UserRouter() *gin.Engine {
 	v1 := r.Group("/v1/user")
 
 	v1.POST("/register", func(c *gin.Context) {
-		service.RegisterUser(c)
+		service.UserRegister(c)
 	})
 	v1.POST("/login", func(c *gin.Context) {
-		// service.RegisterUser(c)
+		service.UserLogin(c)
 	})
 
 	return r
