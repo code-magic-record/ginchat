@@ -9,6 +9,7 @@ Golang练习项目、技术栈
 - [x] mysql
 - [ ] docker
 - [ ] swagger
+- [ ] middleware
 
 ## 实现目标
 用go 完整实现一套API， 并利用docker部署到现网

@@ -3,6 +3,7 @@ package service
 import (
 	"ginchat/models"
 	"ginchat/utils"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -80,8 +81,19 @@ func UserLogin(c *gin.Context) {
 		return
 	}
 
+	token := utils.CreateToken(map[string]interface{}{
+		"phone": phone,
+	})
+
+	c.SetCookie("token", token, int(time.Hour*24*7), "/", "localhost", false, true)
+	storeUserDataInRedis(token, phone, time.Hour*24*7)
 	c.JSON(200, gin.H{
 		"message": "登录成功",
 		"code":    1,
+		"token":   token,
 	})
+}
+
+func storeUserDataInRedis(key string, value string, expire time.Duration) {
+	utils.RDB.Set(utils.RDB.Context(), key, value, expire)
 }
