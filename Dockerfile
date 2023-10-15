@@ -1,9 +1,9 @@
-FROM golang:1.17
+FROM golang:1.16
 
 WORKDIR /app
 
 COPY . /app
 
-EXPOSE 8080
+EXPOSE 8888
 
 CMD [ "go", "run", "." ]
