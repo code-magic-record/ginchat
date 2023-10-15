@@ -94,6 +94,13 @@ func UserLogin(c *gin.Context) {
 	})
 }
 
+func GetUserInfo(c *gin.Context) {
+	// token := c.Query("token")
+	c.JSON(200, gin.H{
+		"message": "获取用户信息成功",
+	})
+}
+
 func storeUserDataInRedis(key string, value string, expire time.Duration) {
 	utils.RDB.Set(utils.RDB.Context(), key, value, expire)
 }
