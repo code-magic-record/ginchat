@@ -1,16 +1,12 @@
-version: '3.8'
+version: "3.8"
 
 services:
   ginchat:
-    build: 
-      context: .
-      dockerfile: Dockerfile
-    image: ginchat-v1
-    container_name: ginchat-v1
+    build: .
+    image: ginchat
+    environment:
+      - CONFIG_PATH=/config
     ports:
       - "8888:8888"
-    environment:
-      - TZ=Asia/shanghai
     volumes:
-      - .:/app
-
+      - ./config:/config
