@@ -26,7 +26,13 @@ func InitSystemConfig() {
 func getYmlConfig() *viper.Viper {
 	// 读取配置文件
 	viper.SetConfigName("app")
-	viper.AddConfigPath("config")
+	// viper.AddConfigPath("config")
+
+	configPath := os.Getenv("CONFIG_PATH")
+	if configPath == "" {
+		configPath = "config" // 使用默认值
+	}
+	viper.AddConfigPath(configPath)
 
 	err := viper.ReadInConfig()
 	if err != nil {
