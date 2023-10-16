@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/go-redis/redis/v8"
+	"github.com/natefinch/lumberjack"
 
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
@@ -61,8 +62,19 @@ func InitRedis(viper *viper.Viper) {
 }
 
 func InitMySQL(viper *viper.Viper) {
+
+	// 创建一个日志文件
+	file := &lumberjack.Logger{
+		Filename:   "logs/gorm.log", // 日志文件路径
+		MaxSize:    1,               // 单个日志文件最大容量（以 MB 为单位）
+		MaxBackups: 30,              // 保留旧文件的最大数量
+		MaxAge:     7,               // 旧文件保留的最大天数
+		Compress:   true,            // 是否启用压缩
+	}
+
 	newLogger := logger.New(
-		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
+		// log.New(file, "\r\n", log.LstdFlags), // 将日志写入文件
+		log.New(file, "\r\n", log.LstdFlags), // io writer
 		logger.Config{
 			SlowThreshold: time.Second, // 慢 SQL 阈值
 			LogLevel:      logger.Info, // 日志级别
