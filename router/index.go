@@ -23,7 +23,7 @@ func Router() *gin.Engine {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	// 将不同类型的路由分别放在不同的文件夹中
 	r.Any("/v1/user/*any", gin.WrapH(user.UserRouter()))
-	r.Any("/v1/ws/*any", gin.WrapH(ws.WsRouter()))
+	r.GET("/v1/ws/*any", gin.WrapH(ws.WsRouter()))
 
 	return r
 }
