@@ -56,8 +56,13 @@ func InitRedis(viper *viper.Viper) {
 		fmt.Println(err, "failed to connect redis")
 		return
 	}
-	RDB.Set(RDB.Context(), "ginchat", "test", time.Second)
-
+	go func() {
+		ticker := time.NewTicker(time.Second * 60 * 10)
+		for range ticker.C {
+			log.Default().Println("定时查询redis，保证redis连接不断开")
+			RDB.Set(RDB.Context(), "ginchat", "test", time.Second)
+		}
+	}()
 	fmt.Println("connect redis success")
 }
 
@@ -95,5 +100,15 @@ func InitMySQL(viper *viper.Viper) {
 	token := CreateToken(map[string]interface{}{
 		"test": "test",
 	})
+
+	go func() {
+		ticker := time.NewTicker(time.Second * 60 * 10)
+		for range ticker.C {
+			fmt.Println("定时查询数据库，保证数据库连接不断开")
+			// 在这里添加需要轮询的逻辑
+			DB.Exec("select 1")
+		}
+	}()
+
 	fmt.Println(token, "token")
 }
