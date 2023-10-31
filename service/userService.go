@@ -45,7 +45,7 @@ func UserRegister(c *gin.Context) {
 
 	}
 	c.JSON(200, gin.H{
-		"message": "创建成功",
+		"message": "注册",
 		"code":    1,
 	})
 }
@@ -95,8 +95,17 @@ func UserLogin(c *gin.Context) {
 }
 
 func GetUserInfo(c *gin.Context) {
-	// token := c.Query("token")
+	token, _ := c.Get("token")
+	phone := utils.GetPhoneFromToken(token.(string))
+	user := models.SearchUserByPhone(phone)
+	result := map[string]interface{}{
+		"name":   user.Name,
+		"phone":  user.Phone,
+		"avatar": user.Avatar,
+	}
 	c.JSON(200, gin.H{
+		"code":    1,
+		"data":    result,
 		"message": "获取用户信息成功",
 	})
 }

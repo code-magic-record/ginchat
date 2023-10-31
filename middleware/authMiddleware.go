@@ -18,6 +18,7 @@ func AuthMiddleWare() gin.HandlerFunc {
 			return
 		}
 		fmt.Println(cookie, "cookie")
+		c.Set("token", cookie)
 		c.Next()
 	}
 }
